@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 
 /* ================= TYPES ================= */
 
@@ -30,6 +30,8 @@ interface CustomerFiles {
   photo?: File;
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 /* ================= COMPONENT ================= */
 
 export default function EditCustomer() {
@@ -49,59 +51,54 @@ export default function EditCustomer() {
     agentId: "",
     state: "",
     district: "",
-    mandal: ""
+    mandal: "",
   });
 
   const [files, setFiles] = useState<CustomerFiles>({});
   const [loading, setLoading] = useState(true);
 
   /* ================= LOAD CUSTOMER ================= */
-
   useEffect(() => {
     if (!id) return;
 
     axios
-      .get<CustomerForm>(`${process.env.REACT_APP_API_URL}/api/customers/${id}`)
-      .then(res => setForm(res.data))
+      .get<CustomerForm>(`${API_URL}/api/customers/${id}`)
+      .then((res) => setForm(res.data))
       .catch(() => alert("❌ Failed to load customer"))
       .finally(() => setLoading(false));
   }, [id]);
 
   /* ================= HANDLERS ================= */
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]:
         name === "number" || name === "aadhaar"
           ? Number(value)
-          : value
+          : value,
     }));
   };
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
-    setFiles(prev => ({
+    setFiles((prev) => ({
       ...prev,
-      [e.target.name]: e.target.files![0]
+      [e.target.name]: e.target.files[0],
     }));
   };
 
   /* ================= SUBMIT ================= */
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    (Object.keys(form) as (keyof CustomerForm)[]).forEach(key => {
+    (Object.keys(form) as (keyof CustomerForm)[]).forEach((key) => {
       const value = form[key];
       if (value !== undefined && value !== null) {
         formData.append(key, String(value));
@@ -113,10 +110,14 @@ export default function EditCustomer() {
     if (files.photo) formData.append("photo", files.photo);
 
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/api/customers/${id}`, formData);
+      await axios.put(
+        `${API_URL}/api/customers/${id}`,
+        formData
+      );
       alert("✅ Customer updated successfully");
       navigate(-1);
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError<string>;
       alert(err.response?.data || "❌ Update failed");
     }
   };

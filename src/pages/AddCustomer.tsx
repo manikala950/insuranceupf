@@ -35,6 +35,8 @@ interface CustomerFiles {
   photo: File | null;
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function AddCustomer() {
   const navigate = useNavigate();
 
@@ -72,8 +74,8 @@ export default function AddCustomer() {
 
   /* ================= LOAD STATES ================= */
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/locations/states`)
-      .then(res => res.json())
+    fetch(`${API_URL}/locations/states`)
+      .then((res) => res.json())
       .then((data: string[]) => setStates(data))
       .catch(() => alert("Failed to load states"));
   }, []);
@@ -81,21 +83,21 @@ export default function AddCustomer() {
   /* ================= INPUT HANDLERS ================= */
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (!files || !files[0]) return;
 
-    setFiles(prev => ({ ...prev, [name]: files[0] }));
+    setFiles((prev) => ({ ...prev, [name]: files[0] }));
   };
 
   /* ================= STATE CHANGE ================= */
   const handleStateChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const state = e.target.value;
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       state,
       district: "",
@@ -106,32 +108,30 @@ export default function AddCustomer() {
     setMandals([]);
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/districts?state=${state}`
+      `${API_URL}/locations/districts?state=${state}`
     );
-    const data: string[] = await res.json();
-    setDistricts(data);
+    setDistricts(await res.json());
   };
 
   /* ================= DISTRICT CHANGE ================= */
   const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const district = e.target.value;
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       district,
       mandal: "",
     }));
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/mandals?state=${form.state}&district=${district}`
+      `${API_URL}/locations/mandals?state=${form.state}&district=${district}`
     );
-    const data: string[] = await res.json();
-    setMandals(data);
+    setMandals(await res.json());
   };
 
   /* ================= MANDAL CHANGE ================= */
   const handleMandalChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, mandal: e.target.value }));
+    setForm((prev) => ({ ...prev, mandal: e.target.value }));
   };
 
   /* ================= AADHAAR CHECK ================= */
@@ -140,9 +140,8 @@ export default function AddCustomer() {
 
     try {
       const res = await axios.get<boolean>(
-        `${process.env.REACT_APP_API_URL}/api/customers/check-aadhaar/${form.aadharNo}`
+        `${API_URL}/api/customers/check-aadhaar/${form.aadharNo}`
       );
-
       setAadhaarError(res.data ? "❌ Aadhaar already exists" : "");
     } catch {
       setAadhaarError("");
@@ -178,7 +177,7 @@ export default function AddCustomer() {
     if (files.photo) formData.append("photo", files.photo);
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/customers/add`, formData);
+      await axios.post(`${API_URL}/api/customers/add`, formData);
       alert("✅ Customer added successfully");
       navigate(-1);
     } catch (error) {
@@ -197,7 +196,6 @@ export default function AddCustomer() {
   /* ================= UI ================= */
   return (
     <div className="min-h-screen flex flex-col items-center pt-8 px-4 bg-muted/20">
-
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 mb-6 text-primary"
@@ -214,7 +212,6 @@ export default function AddCustomer() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
-
             <Input name="fullName" placeholder="Full Name" onChange={handleChange} required />
             <Input type="email" name="email" placeholder="Email" onChange={handleChange} required />
             <Input name="mobileNumber" placeholder="Mobile Number" maxLength={10} onChange={handleChange} required />
@@ -236,17 +233,17 @@ export default function AddCustomer() {
 
             <select className="border rounded-md p-2" value={form.state} onChange={handleStateChange} required>
               <option value="">Select State</option>
-              {states.map(s => <option key={s}>{s}</option>)}
+              {states.map((s) => <option key={s}>{s}</option>)}
             </select>
 
             <select className="border rounded-md p-2" value={form.district} onChange={handleDistrictChange} disabled={!form.state} required>
               <option value="">Select District</option>
-              {districts.map(d => <option key={d}>{d}</option>)}
+              {districts.map((d) => <option key={d}>{d}</option>)}
             </select>
 
             <select className="border rounded-md p-2" value={form.mandal} onChange={handleMandalChange} disabled={!form.district} required>
               <option value="">Select Mandal</option>
-              {mandals.map(m => <option key={m}>{m}</option>)}
+              {mandals.map((m) => <option key={m}>{m}</option>)}
             </select>
 
             <Input name="bankName" placeholder="Bank Name" onChange={handleChange} required />
@@ -266,7 +263,6 @@ export default function AddCustomer() {
                 Add Customer
               </Button>
             </div>
-
           </form>
         </CardContent>
       </Card>

@@ -1,29 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Card,
   CardHeader,
   CardTitle,
-  CardContent
+  CardContent,
 } from "@/components/ui/card";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AddAgent() {
   const navigate = useNavigate();
 
-  // ===== LOCATION LISTS =====
-  const [states, setStates] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [mandals, setMandals] = useState([]);
+  /* ===== LOCATION LISTS ===== */
+  const [states, setStates] = useState<string[]>([]);
+  const [districts, setDistricts] = useState<string[]>([]);
+  const [mandals, setMandals] = useState<string[]>([]);
 
-  // ===== UI SELECTIONS =====
+  /* ===== SELECTED LOCATION ===== */
   const [stateName, setStateName] = useState("");
   const [districtName, setDistrictName] = useState("");
   const [mandalName, setMandalName] = useState("");
 
-  // ===== FORM DATA =====
+  /* ===== FORM ===== */
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -37,108 +40,100 @@ export default function AddAgent() {
     username: "",
     password: "",
     licenseNumber: "",
-    agentIdPreview: ""
   });
 
-  // ================= FETCH STATES =================
+  /* ================= LOAD STATES ================= */
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/locations/states`)
-      .then(res => res.json())
+    fetch(`${API_URL}/locations/states`)
+      .then((res) => res.json())
       .then(setStates)
       .catch(() => alert("Failed to load states"));
   }, []);
 
-  // ================= STATE CHANGE =================
-  const handleStateChange = async (e) => {
+  /* ================= STATE CHANGE ================= */
+  const handleStateChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const state = e.target.value;
-
     setStateName(state);
     setDistrictName("");
     setMandalName("");
     setDistricts([]);
     setMandals([]);
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       stateCode: "",
       districtCode: "",
       mandalCode: "",
-      agentIdPreview: ""
     }));
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/districts?state=${state}`
+      `${API_URL}/locations/districts?state=${state}`
     );
     setDistricts(await res.json());
   };
 
-  // ================= DISTRICT CHANGE =================
-  const handleDistrictChange = async (e) => {
+  /* ================= DISTRICT CHANGE ================= */
+  const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const district = e.target.value;
-
     setDistrictName(district);
     setMandalName("");
     setMandals([]);
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       districtCode: "",
       mandalCode: "",
-      agentIdPreview: ""
     }));
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/mandals?state=${stateName}&district=${district}`
+      `${API_URL}/locations/mandals?state=${stateName}&district=${district}`
     );
     setMandals(await res.json());
   };
 
-  // ================= MANDAL CHANGE =================
-  const handleMandalChange = async (e) => {
+  /* ================= MANDAL CHANGE ================= */
+  const handleMandalChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const mandal = e.target.value;
     setMandalName(mandal);
 
     const params = new URLSearchParams({
       state: stateName,
       district: districtName,
-      mandal
+      mandal,
     });
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/code?${params.toString()}`,
+      `${API_URL}/locations/code?${params.toString()}`,
       { method: "POST" }
     );
 
     const json = await res.json();
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       stateCode: json.stateCode,
       districtCode: json.districtCode,
-      mandalCode: json.mandalCode
+      mandalCode: json.mandalCode,
     }));
   };
 
-  // ================= INPUT CHANGE =================
-  const handleChange = (e) => {
-    setForm(prev => ({
+  /* ================= INPUT CHANGE ================= */
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
-  // ================= SUBMIT =================
-  const handleSubmit = async (e) => {
+  /* ================= SUBMIT ================= */
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const payload = { ...form };
-    delete payload.agentIdPreview;
-
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/agent/add-agent`, {
+      const res = await fetch(`${API_URL}/agent/add-agent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(form),
       });
 
       if (!res.ok) {
@@ -156,16 +151,14 @@ export default function AddAgent() {
 
       alert("✅ Agent added successfully!");
       navigate("/admin");
-
-    } catch (err) {
+    } catch {
       alert("❌ Server error. Please try again later.");
     }
   };
 
-  // ================= UI =================
+  /* ================= UI ================= */
   return (
     <div className="min-h-screen w-full flex flex-col items-center pt-8 px-4 bg-muted/20">
-
       <button
         onClick={() => navigate("/admin")}
         className="flex items-center gap-2 mb-6 text-primary hover:underline"
@@ -182,7 +175,6 @@ export default function AddAgent() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-
             <Input name="name" placeholder="Full Name" onChange={handleChange} required />
             <Input name="email" type="email" placeholder="Email" onChange={handleChange} required />
             <Input name="number" placeholder="Phone Number" onChange={handleChange} required />
@@ -191,17 +183,17 @@ export default function AddAgent() {
 
             <select className="border rounded-md p-2" value={stateName} onChange={handleStateChange} required>
               <option value="">Select State</option>
-              {states.map(s => <option key={s}>{s}</option>)}
+              {states.map((s) => <option key={s}>{s}</option>)}
             </select>
 
             <select className="border rounded-md p-2" value={districtName} onChange={handleDistrictChange} required disabled={!stateName}>
               <option value="">Select District</option>
-              {districts.map(d => <option key={d}>{d}</option>)}
+              {districts.map((d) => <option key={d}>{d}</option>)}
             </select>
 
             <select className="border rounded-md p-2" value={mandalName} onChange={handleMandalChange} required disabled={!districtName}>
               <option value="">Select Mandal</option>
-              {mandals.map(m => <option key={m}>{m}</option>)}
+              {mandals.map((m) => <option key={m}>{m}</option>)}
             </select>
 
             <Input name="address" placeholder="Address" onChange={handleChange} required />
@@ -212,7 +204,6 @@ export default function AddAgent() {
             <div className="col-span-2">
               <Button className="w-full">Add Agent</Button>
             </div>
-
           </form>
         </CardContent>
       </Card>

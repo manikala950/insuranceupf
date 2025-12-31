@@ -20,6 +20,7 @@ interface AgentFilters {
 }
 
 const PAGE_SIZE = 5;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Agents() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,18 +28,21 @@ export default function Agents() {
 
   const [agents, setAgents] = useState<Agent[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [search, setSearch] = useState<AgentFilters>({ agentId: "", name: "" });
+  const [search, setSearch] = useState<AgentFilters>({
+    agentId: "",
+    name: "",
+  });
 
   const [viewAgent, setViewAgent] = useState<Agent | null>(null);
   const [editAgent, setEditAgent] = useState<Agent | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
-
   const [page, setPage] = useState(1);
 
   /* ================= LOAD ================= */
   const loadAgents = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/agent/all`);
-    setAgents(await res.json());
+    const res = await fetch(`${API_URL}/agent/all`);
+    const data = await res.json();
+    setAgents(data);
   };
 
   useEffect(() => {
@@ -78,7 +82,7 @@ export default function Agents() {
   const deleteSelected = async () => {
     await Promise.all(
       selectedIds.map((id) =>
-        fetch(`${process.env.REACT_APP_API_URL}/agent/${id}`, { method: "DELETE" })
+        fetch(`${API_URL}/agent/${id}`, { method: "DELETE" })
       )
     );
     setSelectedIds([]);
@@ -90,7 +94,7 @@ export default function Agents() {
   const saveEdit = async () => {
     if (!editAgent) return;
 
-    await fetch(`${process.env.REACT_APP_API_URL}/agent/${editAgent.id}`, {
+    await fetch(`${API_URL}/agent/${editAgent.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editAgent),
@@ -104,7 +108,17 @@ export default function Agents() {
   const exportCSV = () => {
     if (!agents.length) return;
 
-    const header = Object.keys(agents[0]).join(",");
+    const header = [
+      "agentId",
+      "name",
+      "email",
+      "number",
+      "address",
+      "stateCode",
+      "districtCode",
+      "mandalCode",
+    ].join(",");
+
     const rows = agents.map((a) =>
       [
         a.agentId,
@@ -123,10 +137,10 @@ export default function Agents() {
     });
 
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "agents.csv";
-    a.click();
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "agents.csv";
+    link.click();
   };
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +159,6 @@ export default function Agents() {
 
       <div className={`transition-all ${collapsed ? "lg:pl-20" : "lg:pl-64"}`}>
         <main className="p-6 space-y-6">
-
           <h2 className="text-3xl font-bold">Agents</h2>
 
           {/* FILTERS */}
@@ -244,25 +257,18 @@ export default function Agents() {
             </div>
           </div>
 
-          {/* VIEW AGENT (NICE UI) */}
+          {/* VIEW MODAL */}
           {viewAgent && (
             <Modal title="Agent Details" onClose={() => setViewAgent(null)}>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <Detail label="Agent ID" value={viewAgent.agentId} />
-                <Detail label="Name" value={viewAgent.name} />
-                <Detail label="Email" value={viewAgent.email} />
-                <Detail label="Phone" value={viewAgent.number} />
-                <Detail label="State Code" value={viewAgent.stateCode} />
-                <Detail label="District Code" value={viewAgent.districtCode} />
-                <Detail label="Mandal Code" value={viewAgent.mandalCode} />
-                <div className="col-span-2">
-                  <Detail label="Address" value={viewAgent.address} />
-                </div>
-              </div>
+              <Detail label="Agent ID" value={viewAgent.agentId} />
+              <Detail label="Name" value={viewAgent.name} />
+              <Detail label="Email" value={viewAgent.email} />
+              <Detail label="Phone" value={viewAgent.number} />
+              <Detail label="Address" value={viewAgent.address} />
             </Modal>
           )}
 
-          {/* EDIT */}
+          {/* EDIT MODAL */}
           {editAgent && (
             <Modal title="Edit Agent" onClose={() => setEditAgent(null)}>
               <input
@@ -306,17 +312,16 @@ export default function Agents() {
   );
 }
 
-/* ================= DETAIL ROW ================= */
+/* ================= HELPER COMPONENTS ================= */
 function Detail({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <p className="text-gray-500 text-xs">{label}</p>
+    <div className="mb-2">
+      <p className="text-xs text-gray-500">{label}</p>
       <p className="font-medium">{value || "-"}</p>
     </div>
   );
 }
 
-/* ================= MODAL ================= */
 function Modal({
   title,
   children,
@@ -328,7 +333,7 @@ function Modal({
 }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded w-[480px] max-h-[90vh] overflow-y-auto">
+      <div className="bg-white p-6 rounded w-[480px]">
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         {children}
         <button

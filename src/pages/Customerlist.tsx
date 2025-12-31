@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Pencil, Eye, Trash2, Search } from "lucide-react";
 
-
 /* ================= TYPES ================= */
 interface Customer {
   custId: string;
@@ -20,6 +19,8 @@ interface Customer {
   district: string;
   mandal: string;
 }
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function CustomersList() {
   const navigate = useNavigate();
@@ -40,16 +41,18 @@ export default function CustomersList() {
 
   /* ================= LOAD DATA ================= */
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/customers/all`)
-      .then(res => res.json())
-      .then(data => {
+    fetch(`${API_URL}/api/customers/all`)
+      .then((res) => res.json())
+      .then((data: Customer[]) => {
         setCustomers(data);
         setFiltered(data);
-      });
+      })
+      .catch(() => alert("Failed to load customers"));
 
-    fetch(`${process.env.REACT_APP_API_URL}/locations/states`)
-      .then(res => res.json())
-      .then(setStates);
+    fetch(`${API_URL}/locations/states`)
+      .then((res) => res.json())
+      .then(setStates)
+      .catch(() => alert("Failed to load states"));
   }, []);
 
   /* ================= FILTER ================= */
@@ -60,17 +63,19 @@ export default function CustomersList() {
     id = searchId,
     name = searchName
   ) => {
-    let result = customers;
+    let result = [...customers];
 
-    if (s) result = result.filter(c => c.state === s);
-    if (d) result = result.filter(c => c.district === d);
-    if (m) result = result.filter(c => c.mandal === m);
-    if (id) result = result.filter(c =>
-      c.custId.toLowerCase().includes(id.toLowerCase())
-    );
-    if (name) result = result.filter(c =>
-      c.name.toLowerCase().includes(name.toLowerCase())
-    );
+    if (s) result = result.filter((c) => c.state === s);
+    if (d) result = result.filter((c) => c.district === d);
+    if (m) result = result.filter((c) => c.mandal === m);
+    if (id)
+      result = result.filter((c) =>
+        c.custId.toLowerCase().includes(id.toLowerCase())
+      );
+    if (name)
+      result = result.filter((c) =>
+        c.name.toLowerCase().includes(name.toLowerCase())
+      );
 
     setFiltered(result);
   };
@@ -84,7 +89,7 @@ export default function CustomersList() {
     setMandals([]);
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/districts?state=${value}`
+      `${API_URL}/locations/districts?state=${value}`
     );
     setDistricts(await res.json());
 
@@ -97,7 +102,7 @@ export default function CustomersList() {
     setMandal("");
 
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/locations/mandals?state=${state}&district=${value}`
+      `${API_URL}/locations/mandals?state=${state}&district=${value}`
     );
     setMandals(await res.json());
 
@@ -114,9 +119,11 @@ export default function CustomersList() {
   const deleteCustomer = async (id: string) => {
     if (!confirm("Delete customer?")) return;
 
-    await fetch(`${process.env.REACT_APP_API_URL}/api/customers/${id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/api/customers/${id}`, {
+      method: "DELETE",
+    });
 
-    const updated = customers.filter(c => c.custId !== id);
+    const updated = customers.filter((c) => c.custId !== id);
     setCustomers(updated);
     setFiltered(updated);
   };
@@ -124,7 +131,7 @@ export default function CustomersList() {
   /* ================= UI ================= */
   return (
     <div className="p-6 space-y-6">
-      <Button onClick={() => navigate(-1)}>BACK</Button>
+      <Button onClick={() => navigate(-1)}>Back</Button>
 
       {/* ================= FILTER CARD ================= */}
       <Card>
@@ -137,19 +144,19 @@ export default function CustomersList() {
             className="border rounded-md p-2"
             placeholder="Customer ID"
             value={searchId}
-            onChange={e => setSearchId(e.target.value)}
+            onChange={(e) => setSearchId(e.target.value)}
           />
 
           <input
             className="border rounded-md p-2"
             placeholder="Customer Name"
             value={searchName}
-            onChange={e => setSearchName(e.target.value)}
+            onChange={(e) => setSearchName(e.target.value)}
           />
 
           <select className="border rounded-md p-2" value={state} onChange={handleState}>
             <option value="">Select State</option>
-            {states.map(s => (
+            {states.map((s) => (
               <option key={s}>{s}</option>
             ))}
           </select>
@@ -161,7 +168,7 @@ export default function CustomersList() {
             disabled={!state}
           >
             <option value="">Select District</option>
-            {districts.map(d => (
+            {districts.map((d) => (
               <option key={d}>{d}</option>
             ))}
           </select>
@@ -173,7 +180,7 @@ export default function CustomersList() {
             disabled={!district}
           >
             <option value="">Select Mandal</option>
-            {mandals.map(m => (
+            {mandals.map((m) => (
               <option key={m}>{m}</option>
             ))}
           </select>
@@ -213,7 +220,7 @@ export default function CustomersList() {
 
             <tbody>
               {filtered.length ? (
-                filtered.map(c => (
+                filtered.map((c) => (
                   <tr
                     key={c.custId}
                     className="border-t hover:bg-muted/30 transition"
@@ -256,10 +263,7 @@ export default function CustomersList() {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="text-center py-6 text-gray-500"
-                  >
+                  <td colSpan={6} className="text-center py-6 text-gray-500">
                     No customers found
                   </td>
                 </tr>
