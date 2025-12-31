@@ -54,11 +54,7 @@ const Login = () => {
             Login
           </Button>
 
-          <div className="text-xs text-muted-foreground mt-4">
-            <p><b>Admin:</b> admin@uplife.com / admin123</p>
-            <p><b>Agent:</b> agent@uplife.com / agent123</p>
-            <p><b>User:</b> user@uplife.com / user123</p>
-          </div>
+         
         </CardContent>
       </Card>
     </div>
