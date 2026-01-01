@@ -117,6 +117,23 @@ const Contact = () => {
                   </form>
                 </CardContent>
               </Card>
+              <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12"></h2>
+          <Card className="border-none shadow-xl overflow-hidden max-w-6xl mx-auto">
+            <div className="w-full h-[300px] bg-muted">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1996.5181854391185!2d78.38524715983895!3d17.446989656041946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb91bdc1e040af%3A0x5dde61e297a7f34e!2sShanmukh!5e0!3m2!1sen!2sin!4v1767257227574!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+               
+                referrerPolicy="no-referrer-when-downgrade"
+                title="UPLIFE India Pvt Ltd Office Location"
+              />
+            </div>
+          </Card>
+        </div>
             </div>
 
             {/* Contact Information */}
@@ -138,9 +155,9 @@ const Contact = () => {
                       <div>
                         <h4 className="font-semibold mb-1">Office Address</h4>
                         <p className="text-muted-foreground">
-                          123 Business District<br />
-                          Nariman Point, Mumbai<br />
-                          Maharashtra 400001, India
+                          Shanmukh Emmpire, Ground Floor,<br />
+                          Ayyappa Society Main Road,<br />
+                          Madhapur, Hyderabad,Telangana 500081, India
                         </p>
                       </div>
                     </div>
@@ -148,11 +165,10 @@ const Contact = () => {
                     <div className="flex items-start space-x-4">
                       <Phone className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className="font-semibold mb-1">Phone Numbers</h4>
+                        <h4 className="font-semibold mb-1"></h4>
                         <p className="text-muted-foreground">
-                          Toll Free: 1800 123 4567<br />
-                          Direct: +91 22 1234 5678<br />
-                          Mobile: +91 98765 43210
+                          
+            +91 8919801095
                         </p>
                       </div>
                     </div>
@@ -160,11 +176,9 @@ const Contact = () => {
                     <div className="flex items-start space-x-4">
                       <Mail className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className="font-semibold mb-1">Email Addresses</h4>
+                        <h4 className="font-semibold mb-1"></h4>
                         <p className="text-muted-foreground">
-                          General: support@uplifeindia.com<br />
-                          Claims: claims@uplifeindia.com<br />
-                          Info: info@uplifeindia.com
+                         support@uplife.org.in
                         </p>
                       </div>
                     </div>
@@ -174,9 +188,9 @@ const Contact = () => {
                       <div>
                         <h4 className="font-semibold mb-1">Business Hours</h4>
                         <p className="text-muted-foreground">
-                          Monday - Friday: 9:00 AM - 6:00 PM<br />
-                          Saturday: 10:00 AM - 4:00 PM<br />
-                          Sunday: Closed<br />
+                          Mon - Fri: 9:00 AM - 6:00 PM<br />
+                          Sat: 10:00 AM - 4:00 PM<br />
+                         
                           <span className="text-primary font-medium">24/7 Emergency Support Available</span>
                         </p>
                       </div>
@@ -185,7 +199,7 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-lg bg-primary/5">
+              {/* <Card className="border-none shadow-lg bg-primary/5">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-3">Need Immediate Assistance?</h3>
                   <p className="text-muted-foreground mb-4">
@@ -195,33 +209,18 @@ const Contact = () => {
                     1800 123 4567
                   </a>
                 </CardContent>
-              </Card>
+              </Card> */}
+              
             </div>
           </div>
         </div>
-      </section>
+     
 
       {/* Map Section */}
-      <section className="py-20 bg-section-bg">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Visit Our Office</h2>
-          <Card className="border-none shadow-xl overflow-hidden max-w-6xl mx-auto">
-            <div className="w-full h-[500px] bg-muted">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3774.2076213403976!2d72.8238478!3d18.9251536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1c06fffffff%3A0xc0290485a4d73f57!2sNariman%20Point%2C%20Mumbai%2C%20Maharashtra%20400021!5e0!3m2!1sen!2sin!4v1234567890"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="UPLIFE India Office Location"
-              />
-            </div>
-          </Card>
-        </div>
-      </section>
-
+      
+        
+     
+ </section>
       {/* FAQ Preview */}
       <section className="py-20">
         <div className="container mx-auto px-4">

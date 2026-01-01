@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <img src={logo} alt="UPLIFE India" className="h-12 w-auto mb-4 brightness-0 invert" />
+            <img src={logo} alt="UPLIFE India" className="h-28 w-28 mb-4 brightness-0 invert" />
             <p className="text-background/80 text-sm mb-4">
               Supporting families through the challenging process of death policy claims with compassion and expertise.
             </p>
@@ -61,16 +61,16 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-background/80">
-                  123 Business District, Mumbai, Maharashtra 400001, India
+                   Shanmukh Emmpire, Ground Floor, Ayyappa Society Main Road, Madhapur, Hyderabad,Telangana 500081, India
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                <span className="text-sm text-background/80">+91 22 1234 5678</span>
+                <span className="text-sm text-background/80">+91 8919801095</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <span className="text-sm text-background/80">support@uplifeindia.com</span>
+                <span className="text-sm text-background/80">support@uplife.org.in</span>
               </li>
             </ul>
 
