@@ -48,7 +48,7 @@ export default function Claims() {
 
   const fetchClaims = async () => {
     try {
-      const res = await axios.get<Claim[]>(`${API_URL}/claims`);
+      const res = await axios.get<Claim[]>(`${API_URL}/api/claims`);
       setClaims(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Failed to fetch claims", error);
@@ -65,7 +65,7 @@ export default function Claims() {
 
     try {
       const res = await axios.get<Claim[]>(
-        `${API_URL}/claims/search`,
+        `${API_URL}/api/claims/search`,
         { params: updated }
       );
       setClaims(Array.isArray(res.data) ? res.data : []);
@@ -157,7 +157,7 @@ export default function Claims() {
                         <Button
                           size="sm"
                           onClick={() =>
-                            navigate(`/claims/view/${c.id}`)
+                            navigate(`/api/claims/view/${c.id}`)
                           }
                         >
                           View
