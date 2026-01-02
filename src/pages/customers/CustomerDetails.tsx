@@ -11,7 +11,12 @@ interface Customer {
   state: string;
   district: string;
   mandal: string;
-  bankname: string;
+  bankName: string;
+  ifsc:string;
+  agentId:string;
+  bankAccount:string;
+  date:string;
+
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -50,7 +55,14 @@ export default function CustomerDetails() {
           <p><b>State:</b> {customer.state}</p>
           <p><b>District:</b> {customer.district}</p>
           <p><b>Mandal:</b> {customer.mandal}</p>
-          <p><b>Bank Name:</b> {customer.bankname}</p>
+          <p><b>BankName:</b> {customer.bankName}</p>
+          <p><b>IFSC:</b> {customer.ifsc}</p>
+          <p><b>BankAccount:</b> {customer.bankAccount}</p>
+          <p><b>AgentID:</b> {customer.agentId}</p>
+          <p><b>Date:</b> {customer.date}</p>
+
+
+
         </CardContent>
       </Card>
     </div>

@@ -122,15 +122,14 @@ const Contact = () => {
           <Card className="border-none shadow-xl overflow-hidden max-w-6xl mx-auto">
             <div className="w-full h-[300px] bg-muted">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1996.5181854391185!2d78.38524715983895!3d17.446989656041946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb91bdc1e040af%3A0x5dde61e297a7f34e!2sShanmukh!5e0!3m2!1sen!2sin!4v1767257227574!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-               
-                referrerPolicy="no-referrer-when-downgrade"
-                title="UPLIFE India Pvt Ltd Office Location"
-              />
+  src="https://www.google.com/maps?q=UPLIFE%20India%20Pvt%20Ltd&output=embed"
+  width="100%"
+  height="100%"
+  style={{ border: 0 }}
+  loading="lazy"
+  title="UPLIFE India Pvt Ltd Location"
+/>
+
             </div>
           </Card>
         </div>

@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
-          <div>
+         <div>
             <img src={logo} alt="UPLIFE India" className="h-28 w-28 mb-4 brightness-0 invert" />
             <p className="text-background/80 text-sm mb-4">
               Supporting families through the challenging process of death policy claims with compassion and expertise.
