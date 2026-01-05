@@ -19,18 +19,24 @@ const Navigation = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
+
+          {/* LOGO */}
           <NavLink to="/" className="flex items-center space-x-3">
-            <img src={logo} alt="UPLIFE India Pvt Ltd" className="h-24 w-24" />
+            <img
+              src={logo}
+              alt="UPLIFE India Pvt Ltd"
+              className="h-24 w-24"
+            />
           </NavLink>
 
-          {/* Desktop Navigation */}
+          {/* DESKTOP NAVIGATION */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <NavLink
@@ -42,7 +48,9 @@ const Navigation = () => {
                 {item.label}
               </NavLink>
             ))}
-            {isAuthenticated ? (
+
+            {/* ONLY SHOW WHEN AUTHENTICATED */}
+            {isAuthenticated && (
               <>
                 <Button variant="outline" asChild>
                   <NavLink to="/dashboard">
@@ -50,19 +58,16 @@ const Navigation = () => {
                     Dashboard
                   </NavLink>
                 </Button>
+
                 <Button variant="outline" onClick={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign Out
                 </Button>
               </>
-            ) : (
-              <Button asChild>
-                <NavLink to="/login">Sign In</NavLink>
-              </Button>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* MOBILE MENU BUTTON */}
           <button
             className="md:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
@@ -72,7 +77,7 @@ const Navigation = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* MOBILE NAVIGATION */}
         {isOpen && (
           <div className="md:hidden py-4 space-y-4 animate-fade-in">
             {navItems.map((item) => (
@@ -86,25 +91,31 @@ const Navigation = () => {
                 {item.label}
               </NavLink>
             ))}
-            {isAuthenticated ? (
+
+            {/* ONLY SHOW WHEN AUTHENTICATED */}
+            {isAuthenticated && (
               <>
-                <Button variant="outline" asChild className="w-full">
-                  <NavLink to="/dashboard" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="outline"
+                  asChild
+                  className="w-full"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <NavLink to="/dashboard">
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
                   </NavLink>
                 </Button>
-                <Button variant="outline" onClick={handleSignOut} className="w-full">
+
+                <Button
+                  variant="outline"
+                  onClick={handleSignOut}
+                  className="w-full"
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign Out
                 </Button>
               </>
-            ) : (
-              <Button asChild className="w-full">
-                <NavLink to="/login" onClick={() => setIsOpen(false)}>
-                  Sign In
-                </NavLink>
-              </Button>
             )}
           </div>
         )}

@@ -11,7 +11,7 @@ import Footer from "./components/Footer";
 
 // Non-lazy pages
 import CustomersList from "./pages/Customerlist";
-import Reports from "./pages/Reports";
+import Reports from "./pages/reports/ReportsPage";
 import UploadClaim from "./pages/UploadClaim";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CustomerDetails from "./pages/customers/CustomerDetails";

@@ -22,7 +22,8 @@ interface AgentFilters {
 const PAGE_SIZE = 5;
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function Agents() {
+export default function Agents({ hideSidebar = false }: { hideSidebar?: boolean }) {
+ 
   const [menuOpen, setMenuOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -150,14 +151,20 @@ export default function Agents() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar
-        isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        collapsed={collapsed}
-        setCollapsed={setCollapsed}
-      />
+     {!hideSidebar && (
+  <Sidebar
+    isOpen={menuOpen}
+    onClose={() => setMenuOpen(false)}
+    collapsed={collapsed}
+    setCollapsed={setCollapsed}
+  />
+)}
 
-      <div className={`transition-all ${collapsed ? "lg:pl-20" : "lg:pl-64"}`}>
+    <div
+  className={`transition-all ${
+    hideSidebar ? "pl-0" : collapsed ? "lg:pl-20" : "lg:pl-64"
+  }`}
+>
         <main className="p-6 space-y-6">
           <h2 className="text-3xl font-bold">Agents</h2>
 

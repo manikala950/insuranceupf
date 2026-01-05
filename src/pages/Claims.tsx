@@ -140,7 +140,7 @@ export default function Claims() {
                     <td className="border p-2 text-center">
                       <Button
                         size="sm"
-                        onClick={() => navigate(`/claims/view/${c.id}`)}
+                        onClick={() => navigate(`api/claims/view/${c.id}`)}
                       >
                         View
                       </Button>
