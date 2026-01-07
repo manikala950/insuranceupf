@@ -50,7 +50,7 @@ const ACCIDENTAL_DOCS = [
 ];
 
 /* ===================== COMPONENT ===================== */
-
+const API_URL = import.meta.env.VITE_API_URL;
 export default function UploadClaim() {
   const navigate = useNavigate();
 
@@ -135,7 +135,7 @@ export default function UploadClaim() {
 
     try {
       await axios.post(
-        "http://localhost:8080/api/claims/upload",
+        `${API_URL}/api/claims/upload`,
         formData,
         {
           headers: {

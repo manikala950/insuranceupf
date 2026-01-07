@@ -23,7 +23,7 @@ interface SearchFilters {
 }
 
 /* ===================== COMPONENT ===================== */
-
+const API_URL = import.meta.env.VITE_API_URL;
 export default function Claims() {
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ export default function Claims() {
   }, []);
 
   const fetchClaims = async () => {
-    const res = await axios.get("http://localhost:8080/api/claims");
+    const res = await axios.get(`${API_URL}/api/claims`);
     setClaims(res.data || []);
   };
  
@@ -55,7 +55,7 @@ export default function Claims() {
     setSearch(updated);
 
     const res = await axios.get(
-      "http://localhost:8080/api/claims/search",
+      `${API_URL}/api/claims/search`,
       { params: updated }
     );
     setClaims(res.data || []);

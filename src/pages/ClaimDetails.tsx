@@ -66,20 +66,20 @@ const MANDATORY_DOCS: Record<"NORMAL" | "ACCIDENTAL", string[]> = {
 };
 
 /* ===================== COMPONENT ===================== */
-
+const API_URL = import.meta.env.VITE_API_URL;
 export default function ClaimDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [claim, setClaim] = useState<Claim | null>(null);
 
   const role = localStorage.getItem("role") || "AGENT";
-  const DOC_API = "http://localhost:8080/api/claims/documents";
+  const DOC_API = `${API_URL}/api/claims/documents`;
 
   /* ===================== FETCH CLAIM ===================== */
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/claims/${id}`)
+      .get(`${API_URL}/api/claims/${id}`)
       .then((res) => {
         setClaim({
           ...res.data,
@@ -143,7 +143,7 @@ export default function ClaimDetails() {
   async function updateStatus(status: "Approved" | "Rejected") {
     try {
       await axios.put(
-        `http://localhost:8080/api/claims/${claim.id}/status`,
+        `${API_URL}/api/claims/${claim.id}/status`,
         { status }
       );
 
