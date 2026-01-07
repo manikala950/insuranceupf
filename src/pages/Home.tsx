@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      <section className="relative min-h-[110vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0" >
           <img
             src={heroImage}
             alt="Supporting families"
@@ -19,10 +19,13 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 to-foreground/70" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 py-20">
-          <div className="max-w-3xl">
+        <div className="container mx-auto px-4 relative z-10  py-20">
+          <div className="max-w-8xl">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-background mb-6 animate-fade-in">
-              Supporting Families Through{" "}
+            <span className="text-primary">CARE THAT CLAIMS YOURS RIGHTS</span></h1>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-background mb-6 animate-fade-in">
+             
+                            Supporting Families Through{" "}
               <span className="text-primary">Policy Claims</span>
             </h1>
             <p className="text-xl md:text-2xl text-background/90 mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
@@ -137,7 +140,7 @@ const Home = () => {
             <Button size="lg" variant="outline" asChild className="bg-background text-primary hover:bg-background/90 border-none text-lg">
               <NavLink to="/contact">Contact Us</NavLink>
             </Button>
-            <Button size="lg" variant="outline" asChild className="border-background text-background hover:bg-background hover:text-primary text-lg">
+            <Button size="lg" variant="outline" asChild className="bg-background text-primary hover:bg-background/90 border-none text-lg">
               <NavLink to="/process">See How It Works</NavLink>
             </Button>
           </div>

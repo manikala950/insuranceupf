@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 /* ================= TYPES ================= */
+
 interface CustomerForm {
   fullName: string;
   email: string;
@@ -23,6 +24,7 @@ interface CustomerForm {
   district: string;
   mandal: string;
   date: string;
+  claimType: "" | "NORMAL_DEATH" | "ACCIDENTAL_DEATH" | "OTHERS";
 }
 
 interface CustomerFiles {
@@ -41,6 +43,7 @@ export default function AddCustomer() {
   const navigate = useNavigate();
 
   /* ================= STATE ================= */
+
   const [form, setForm] = useState<CustomerForm>({
     fullName: "",
     email: "",
@@ -56,6 +59,7 @@ export default function AddCustomer() {
     district: "",
     mandal: "",
     date: "",
+    claimType: "",
   });
 
   const [files, setFiles] = useState<CustomerFiles>({
@@ -70,6 +74,7 @@ export default function AddCustomer() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   /* ================= LOAD STATES ================= */
+
   useEffect(() => {
     fetch(`${API_URL}/locations/states`)
       .then(res => res.json())
@@ -78,6 +83,7 @@ export default function AddCustomer() {
   }, []);
 
   /* ================= HANDLERS ================= */
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm(p => ({ ...p, [name]: value }));
@@ -109,6 +115,7 @@ export default function AddCustomer() {
   };
 
   /* ================= DUPLICATE CHECK ================= */
+
   const checkDuplicate = async (field: string, value: string) => {
     if (!value) return;
 
@@ -123,6 +130,7 @@ export default function AddCustomer() {
   };
 
   /* ================= SUBMIT ================= */
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -146,7 +154,7 @@ export default function AddCustomer() {
     fd.append("district", form.district);
     fd.append("mandal", form.mandal);
     fd.append("date", form.date);
-
+    fd.append("claimType", form.claimType);
 
     if (files.aadharFile) fd.append("aadharFile", files.aadharFile);
     if (files.panFile) fd.append("panFile", files.panFile);
@@ -158,25 +166,16 @@ export default function AddCustomer() {
       navigate(-1);
     } catch (err) {
       const error = err as AxiosError<ApiError>;
-
-      if (typeof error.response?.data === "string") {
-        alert(error.response.data);
-      } else if (error.response?.data?.message) {
-        alert(error.response.data.message);
-      } else {
-        alert("❌ Failed to add customer");
-      }
+      alert(error.response?.data?.message || "❌ Failed to add customer");
     }
   };
 
   /* ================= UI ================= */
+
   return (
     <div className="min-h-screen flex justify-center pt-8 bg-muted/20">
       <Card className="w-full max-w-3xl p-4 shadow-xl">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex gap-2 mb-4 text-primary"
-        >
+        <button onClick={() => navigate(-1)} className="flex gap-2 mb-4 text-primary">
           <ArrowLeft /> Back
         </button>
 
@@ -188,19 +187,18 @@ export default function AddCustomer() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
+
             <Input name="fullName" placeholder="Full Name" onChange={handleChange} required />
 
-            <div>
-              <Input
-                name="email"
-                type="email"
-                placeholder="Email"
-                onBlur={e => checkDuplicate("email", e.target.value)}
-                onChange={handleChange}
-                required
-              />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-            </div>
+            <Input
+              name="email"
+              type="email"
+              placeholder="Email"
+              onBlur={e => checkDuplicate("email", e.target.value)}
+              onChange={handleChange}
+              required
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
             <Input
               name="mobileNumber"
@@ -228,19 +226,29 @@ export default function AddCustomer() {
               required
             />
 
-            <Input
-              name="bankAccount"
-              placeholder="Bank Account"
-              onBlur={e => checkDuplicate("bank", e.target.value)}
-              onChange={handleChange}
-              required
-            />
-
+            <Input name="bankAccount" placeholder="Bank Account" onChange={handleChange} required />
             <Input name="bankName" placeholder="Bank Name" onChange={handleChange} required />
             <Input name="ifsc" placeholder="IFSC Code" onChange={handleChange} required />
             <Input name="agentId" placeholder="Agent ID" onChange={handleChange} required />
-          <Input type="date" name="date" onChange={handleChange} required />
 
+            <Input type="date" name="date" onChange={handleChange} required />
+
+            {/* CLAIM TYPE */}
+            <select
+              className="border p-2"
+              value={form.claimType}
+              onChange={e =>
+                setForm(p => ({ ...p, claimType: e.target.value as any }))
+              }
+              required
+            >
+              <option value="">Select Claim Type</option>
+              <option value="NORMAL_DEATH">Normal Death</option>
+              <option value="ACCIDENTAL_DEATH">Accidental Death</option>
+              <option value="OTHERS">Others</option>
+            </select>
+
+            {/* STATE / DISTRICT / MANDAL */}
             <select className="border p-2" value={form.state} onChange={handleStateChange} required>
               <option value="">Select State</option>
               {states.map(s => <option key={s}>{s}</option>)}
@@ -268,6 +276,22 @@ export default function AddCustomer() {
               {mandals.map(m => <option key={m}>{m}</option>)}
             </select>
 
+            {/* DOWNLOAD FORMS */}
+            <div className="md:col-span-2 border p-3 rounded">
+              <p className="font-semibold mb-2">📄 Download Claim Forms</p>
+              <div className="flex gap-4 flex-wrap">
+                <a href="/forms/normal-death-claim.pdf" download className="text-blue-600 underline">
+                  Normal Death
+                </a>
+                <a href="/forms/accidental_death_claim.pdf" download className="text-blue-600 underline">
+                  Accidental Death
+                </a>
+                <a href="/forms/other-claim.pdf" download className="text-blue-600 underline">
+                  Others
+                </a>
+              </div>
+            </div>
+
             <Input
               name="address"
               placeholder="Address"
@@ -276,13 +300,26 @@ export default function AddCustomer() {
               required
             />
 
-            <input type="file" name="aadharFile" onChange={handleFileChange} required />
-            <input type="file" name="panFile" onChange={handleFileChange} required />
-            <input type="file" name="photo" onChange={handleFileChange} required />
+            {/* FILE UPLOADS */}
+            <div>
+              <label>Upload Aadhaar</label>
+              <input type="file" name="aadharFile" onChange={handleFileChange} required />
+            </div>
+
+            <div>
+              <label>Upload PAN</label>
+              <input type="file" name="panFile" onChange={handleFileChange} required />
+            </div>
+
+            <div>
+              <label>Upload Form</label>
+              <input type="file" name="photo" onChange={handleFileChange} required />
+            </div>
 
             <Button type="submit" className="md:col-span-2">
               Add Customer
             </Button>
+
           </form>
         </CardContent>
       </Card>

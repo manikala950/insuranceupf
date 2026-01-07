@@ -15,6 +15,8 @@ import Reports from "./pages/reports/ReportsPage";
 import UploadClaim from "./pages/UploadClaim";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CustomerDetails from "./pages/customers/CustomerDetails";
+import SubsidyServices from "./pages/SubsidyServices";
+import ClaimDetails from "./pages/ClaimDetails";
 
 // Lazy pages
 const Home = React.lazy(() => import("./pages/Home"));
@@ -84,6 +86,8 @@ const Layout = () => {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/agent" element={<AgentDashboard />} />
             <Route path="/customer" element={<CustomerDashboard />} />
+            <Route path="/subsidy-services" element={<SubsidyServices />} />
+            
 
             {/* Customers */}
             <Route path="/customerslist" element={<CustomersList />} />
@@ -98,9 +102,11 @@ const Layout = () => {
             {/* Others */}
             <Route path="/reports" element={<Reports />} />
             <Route path="/claims" element={<Claims />} />
+            <Route path="/upload-claim" element={<UploadClaim />} />
+            <Route path="/claims/:id" element={<ClaimDetails />} />
             <Route path="/notices" element={<Notice />} />
             <Route path="/noticeslist" element={<NoticesList />} />
-            <Route path="/upload-claim" element={<UploadClaim />} />
+            
 
             {/* 404 */}
             <Route path="*" element={<NotFound />} />

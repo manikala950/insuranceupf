@@ -16,6 +16,7 @@ interface Customer {
   agentId:string;
   bankAccount:string;
   date:string;
+  claimType:string;
 
 }
 
@@ -60,7 +61,7 @@ export default function CustomerDetails() {
           <p><b>BankAccount:</b> {customer.bankAccount}</p>
           <p><b>AgentID:</b> {customer.agentId}</p>
           <p><b>Date:</b> {customer.date}</p>
-
+          <p><b>Claim:</b> {customer.claimType}</p>
 
 
         </CardContent>

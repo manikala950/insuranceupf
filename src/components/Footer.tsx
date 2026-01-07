@@ -9,8 +9,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
          <div>
-            <img src={logo} alt="UPLIFE India" className="h-28 w-28 mb-4 brightness-0 invert" />
+            <img src={logo} alt="UPLIFE India" className="h-28 w-28 mb-2 brightness-0 invert" />
             <p className="text-background/80 text-sm mb-4">
+            Care that claims your rights</p>
+            <p className="text-background/80 text-sm mb-4">
+            
               Supporting families through the challenging process of death policy claims with compassion and expertise.
             </p>
           </div>
