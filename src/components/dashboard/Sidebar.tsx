@@ -21,7 +21,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: "Dashboard", path: "/admin" },
+  { icon: Home, label: "Dashboard", path: "/admin/dashboard" },
   { icon: Users, label: "Agents", path: "/agentslist" },
   { icon: UserCircle, label: "Customers", path: "/customerslist" },
   { icon: Bell, label: "Notices", path: "/noticeslist" },
