@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 
+
 // Non-lazy pages
 import CustomersList from "./pages/Customerlist";
 import Reports from "./pages/reports/ReportsPage";
@@ -17,6 +18,8 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import CustomerDetails from "./pages/customers/CustomerDetails";
 import SubsidyServices from "./pages/SubsidyServices";
 import ClaimDetails from "./pages/ClaimDetails";
+import AdminLogin from "./pages/AdminLogin";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Lazy pages
 const Home = React.lazy(() => import("./pages/Home"));
@@ -82,8 +85,10 @@ const Layout = () => {
             <Route path="/login" element={<Login />} />
 
             {/* Dashboards */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route
+              path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             <Route path="/agent" element={<AgentDashboard />} />
             <Route path="/customer" element={<CustomerDashboard />} />
             <Route path="/subsidy-services" element={<SubsidyServices />} />

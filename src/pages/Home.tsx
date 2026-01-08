@@ -22,7 +22,7 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10  py-20">
           <div className="max-w-8xl">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-background mb-6 animate-fade-in">
-            <span className="text-primary">CARE THAT CLAIMS YOURS RIGHTS</span></h1>
+            <span className="text-primary">CARE THAT CLAIMS YOUR RIGHTS</span></h1>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-background mb-6 animate-fade-in">
              
                             Supporting Families Through{" "}
