@@ -20,6 +20,8 @@ import SubsidyServices from "./pages/SubsidyServices";
 import ClaimDetails from "./pages/ClaimDetails";
 import AdminLogin from "./pages/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AgentLogin from "./pages/AgentLogin";
+import CustomerLogin from "./pages/CustomerLogin";
 
 // Lazy pages
 const Home = React.lazy(() => import("./pages/Home"));
@@ -89,18 +91,20 @@ const Layout = () => {
             <Route path="/admin" element={<AdminLogin />} />
             <Route
               path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/agent" element={<AgentDashboard />} />
-            <Route path="/customer" element={<CustomerDashboard />} />
+            <Route path="/agent/dashboard" element={<AgentDashboard />} />
+            <Route path="/customer/dashboard" element={<CustomerDashboard />} />
             <Route path="/subsidy-services" element={<SubsidyServices />} />
             
 
             {/* Customers */}
+            <Route path="/customer" element={<CustomerLogin />} />
             <Route path="/customerslist" element={<CustomersList />} />
             <Route path="/customers/view/:id" element={<CustomerDetails />} />
             <Route path="/customers/edit/:id" element={<EditCustomer />} />
             <Route path="/add-customer" element={<AddCustomer />} />
 
             {/* Agents */}
+            <Route path="/agent" element={<AgentLogin />} />
             <Route path="/agentslist" element={<Agents />} />
             <Route path="/add-agent" element={<AddAgent />} />
 
