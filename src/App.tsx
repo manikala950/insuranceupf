@@ -22,6 +22,8 @@ import AdminLogin from "./pages/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AgentLogin from "./pages/AgentLogin";
 import CustomerLogin from "./pages/CustomerLogin";
+import AdminSettings from "./pages/AdminSettings";
+import AgentSettings from "./pages/AgentSettings";
 
 // Lazy pages
 const Home = React.lazy(() => import("./pages/Home"));
@@ -89,10 +91,11 @@ const Layout = () => {
             {/* Dashboards */}
             
             <Route path="/admin" element={<AdminLogin />} />
-            <Route
-              path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             <Route path="/agent/dashboard" element={<AgentDashboard />} />
             <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+            <Route path="/agent/settings" element={<AgentSettings />} />
             <Route path="/subsidy-services" element={<SubsidyServices />} />
             
 

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 /* UI Components */
 import {
@@ -39,9 +46,12 @@ import {
 
 function AgentSidebar({ collapsed }: { collapsed: boolean }) {
   const navigate = useNavigate();
+  const storedAgent = localStorage.getItem("agent");
+  const agent = storedAgent ? JSON.parse(storedAgent) : null;
+
 
   const menu = [
-    { label: "Dashboard", icon: LayoutDashboard, path: "/agent" },
+    { label: "Dashboard", icon: LayoutDashboard, path: "/agent/dashboard" },
     { label: "Customers", icon: Users, path: "/customerslist" },
     { label: "Claims", icon: FileText, path: "/claims" },
   ];
@@ -76,7 +86,7 @@ function AgentSidebar({ collapsed }: { collapsed: boolean }) {
         <button
           onClick={() => {
             localStorage.clear();
-            navigate("/login");
+            navigate("/agent");
           }}
           className="flex items-center gap-3 w-full p-3 rounded hover:bg-red-600"
         >
@@ -116,7 +126,7 @@ const AgentDashboard: React.FC = () => {
       description: "Submit claim files",
       icon: UploadCloud,
       color: "bg-blue-500",
-      action: () => navigate("/upload-documents"),
+      action: () => {},
     },
     {
       label: "Call Customer",
@@ -146,38 +156,44 @@ const AgentDashboard: React.FC = () => {
             <p className="text-muted-foreground">Welcome back!</p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon">
-              <Bell className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-3">
+              {/* Notifications */}
+              <Button variant="outline" size="icon">
+                <Bell className="h-4 w-4" />
+              </Button>
 
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => navigate("/change-password")}
-            >
-              <Key className="h-4 w-4" />
-            </Button>
+              {/* Agent Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="flex items-center gap-2 cursor-pointer border rounded-lg px-3 py-1.5 hover:bg-muted">
+                    <Avatar className="h-7 w-7">
+                      <AvatarFallback className="bg-cyan-500 text-white">
+                        AG
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">Agent</span>
+                  </div>
+                </DropdownMenuTrigger>
 
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => navigate("/settings")}
-            >
-              <Settings className="h-4 w-4" />
-            </Button>
+                <DropdownMenuContent align="end" className="w-44">
+                  <DropdownMenuItem onClick={() => navigate("/agent/settings")}>
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
 
-            <Button
-              variant="destructive"
-              size="icon"
+            <DropdownMenuItem
+              className="text-red-600"
               onClick={() => {
                 localStorage.clear();
-                navigate("/login");
+                navigate("/agent");
               }}
             >
-              <LogOut className="h-4 w-4" />
-            </Button>
-          </div>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         </div>
 
         {/* ================= SEARCH ================= */}

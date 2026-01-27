@@ -193,7 +193,7 @@ export default function CustomerDashboard() {
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      navigate("/login");
+      navigate("/customer");
     }
   };
 
@@ -266,11 +266,6 @@ export default function CustomerDashboard() {
                 <User className="h-4 w-4 mr-2" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <KeyRound className="h-4 w-4 mr-2" />
-                Change Password
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-red-600"
                 onClick={handleLogout}
